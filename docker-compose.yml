@@ -1,0 +1,19 @@
+name: chronos
+
+services:
+  db:
+    build: ./docker/postgres
+    image: chronos-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-chronos}
+      POSTGRES_USER: ${POSTGRES_USER:-chronos}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-chronos}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      # Postgres 18+ images store data under /var/lib/postgresql/18/docker.
+      - db-data:/var/lib/postgresql
+
+volumes:
+  db-data:
